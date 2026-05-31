@@ -6,6 +6,7 @@ import { cultureItems } from '@/data/culture';
 import type { CultureItem } from '@/types/tdxp';
 import { Img } from '@/components/ui/Img';
 import { cn } from '@/lib/utils';
+import { TechBackdrop } from './TechBackdrop';
 
 const aspectCls: Record<NonNullable<CultureItem['aspect']>, string> = {
     tall: 'aspect-[3/4]',
@@ -17,8 +18,9 @@ export function CultureGallery() {
     const [selected, setSelected] = useState<CultureItem | null>(null);
 
     return (
-        <section id="culture" className="scroll-mt-24 py-20 md:py-28">
-            <div className="mx-auto max-w-7xl px-4 md:px-8">
+        <section id="culture" className="relative scroll-mt-24 overflow-hidden py-20 md:py-28">
+            <TechBackdrop />
+            <div className="relative mx-auto max-w-7xl px-4 md:px-8">
                 <div className="mb-10 max-w-2xl">
                     <p className="text-sm font-bold tracking-[0.25em] text-accent">VĂN HOÁ</p>
                     <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Văn hoá Phòng Công Nghệ</h2>

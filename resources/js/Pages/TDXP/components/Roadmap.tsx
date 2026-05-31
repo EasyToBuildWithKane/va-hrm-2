@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { roadmapItems } from '@/data/roadmap';
+import { TechBackdrop } from './TechBackdrop';
 
 export function Roadmap() {
     const ref = useRef<HTMLDivElement>(null);
@@ -11,8 +12,9 @@ export function Roadmap() {
     const lineScale = useTransform(scrollYProgress, [0, 0.85], [0, 1]);
 
     return (
-        <section id="roadmap" className="scroll-mt-24 py-20 md:py-28" ref={ref}>
-            <div className="mx-auto max-w-3xl px-4 md:px-8">
+        <section id="roadmap" className="relative scroll-mt-24 overflow-hidden py-20 md:py-28" ref={ref}>
+            <TechBackdrop />
+            <div className="relative mx-auto max-w-3xl px-4 md:px-8">
                 <div className="mb-12 text-center">
                     <p className="text-sm font-bold tracking-[0.2em] text-accent">LỘ TRÌNH</p>
                     <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Roadmap 2026–2027</h2>

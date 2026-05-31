@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Target, Eye } from 'lucide-react';
 import { about } from '@/data/about';
 import { getLucideIcon } from '@/lib/lucide';
+import { TechBackdrop } from './TechBackdrop';
 
 const reveal = {
     hidden: { opacity: 0, y: 28 },
@@ -14,8 +15,9 @@ const reveal = {
 
 export function AboutSection() {
     return (
-        <section id="about" className="scroll-mt-24 py-20 md:py-28">
-            <div className="mx-auto max-w-7xl px-4 md:px-8">
+        <section id="about" className="relative scroll-mt-24 overflow-hidden py-20 md:py-28">
+            <TechBackdrop />
+            <div className="relative mx-auto max-w-7xl px-4 md:px-8">
                 <motion.div
                     className="mb-14 max-w-2xl"
                     initial={{ opacity: 0, y: 20 }}

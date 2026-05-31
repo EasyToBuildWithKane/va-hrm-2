@@ -369,6 +369,79 @@ body {
     animation: grid-pan 12s linear infinite;
 }
 
+/* ---- Org chart: cây sơ đồ tổ chức (connector thuần CSS) ---- */
+.org-tree ul {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+}
+
+.org-tree li {
+    position: relative;
+    list-style: none;
+    padding: 2rem 0.75rem 0;
+    text-align: center;
+}
+
+/* Đường nối ngang giữa các node anh em */
+.org-tree li::before,
+.org-tree li::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 50%;
+    width: 50%;
+    height: 2rem;
+    border-top: 2px solid rgba(255, 255, 255, 0.16);
+}
+
+.org-tree li::after {
+    right: auto;
+    left: 50%;
+    border-left: 2px solid rgba(255, 255, 255, 0.16);
+}
+
+/* Node duy nhất không cần connector trên */
+.org-tree li:only-child::before,
+.org-tree li:only-child::after {
+    display: none;
+}
+
+.org-tree li:only-child {
+    padding-top: 0;
+}
+
+/* Bo mép connector ở node đầu/cuối hàng */
+.org-tree li:first-child::before,
+.org-tree li:last-child::after {
+    border: 0 none;
+}
+
+.org-tree li:last-child::before {
+    border-right: 2px solid rgba(255, 255, 255, 0.16);
+    border-radius: 0 6px 0 0;
+}
+
+.org-tree li:first-child::after {
+    border-radius: 6px 0 0 0;
+}
+
+/* Đường nối dọc từ node cha xuống hàng con */
+.org-tree ul ul::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 0;
+    height: 2rem;
+    border-left: 2px solid rgba(255, 255, 255, 0.16);
+}
+
+.org-tree > ul {
+    padding-top: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .animate-marquee,
     .animate-marquee-slow,

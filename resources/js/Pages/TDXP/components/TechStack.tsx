@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { technologies } from '@/data/technologies';
 import type { TechCategory } from '@/types/tdxp';
 import { cn } from '@/lib/utils';
+import { TechBackdrop } from './TechBackdrop';
 
 const categoryLabels: Record<TechCategory, string> = {
     language: 'Ngôn ngữ',
@@ -43,8 +44,9 @@ export function TechStack() {
     ];
 
     return (
-        <section id="stack" className="scroll-mt-24 overflow-hidden bg-secondary py-20 text-white md:py-28">
-            <div className="mx-auto max-w-7xl px-4 md:px-8">
+        <section id="stack" className="relative scroll-mt-24 overflow-hidden bg-secondary py-20 text-white md:py-28">
+            <TechBackdrop />
+            <div className="relative mx-auto max-w-7xl px-4 md:px-8">
                 <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                     <div className="max-w-2xl">
                         <p className="text-sm font-bold tracking-[0.2em] text-accent">CÔNG NGHỆ SỬ DỤNG</p>

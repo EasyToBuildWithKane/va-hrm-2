@@ -7,6 +7,8 @@ import { getLucideIcon } from '@/lib/lucide';
 import { Img } from '@/components/ui/Img';
 import { Badge } from '@/components/ui/Badge';
 import { Drawer } from '@/components/ui/Drawer';
+import { Slider } from './Slider';
+import { TechBackdrop } from './TechBackdrop';
 import { cn } from '@/lib/utils';
 
 const statusMeta: Record<ProductStatus, { label: string; cls: string }> = {
@@ -16,74 +18,63 @@ const statusMeta: Record<ProductStatus, { label: string; cls: string }> = {
     planned: { label: 'Sắp ra mắt', cls: 'bg-white/10 text-white/55' },
 };
 
-const spanCls: Record<NonNullable<Product['size']>, string> = {
-    lg: 'sm:col-span-2 sm:row-span-2',
-    md: 'sm:col-span-2',
-    sm: '',
-};
-
 function StatusBadge({ status }: { status: ProductStatus }) {
     const meta = statusMeta[status];
     return (
-        <span className={cn('inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-semibold', meta.cls)}>
+        <span className={cn('inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-semibold backdrop-blur-sm', meta.cls)}>
             {meta.label}
         </span>
     );
 }
 
-function ProductCard({ product, index, onOpen }: { product: Product; index: number; onOpen: () => void }) {
+function ProductCard({ product, onOpen }: { product: Product; onOpen: () => void }) {
     const Icon = getLucideIcon(product.icon);
-    const isLarge = product.size === 'lg';
     const placeholder = product.confirmed === false;
 
     return (
         <motion.button
             type="button"
             onClick={onOpen}
-            className={cn(
-                'group light-beam relative flex flex-col justify-end overflow-hidden rounded-2xl border border-white/10 bg-secondary/40 p-6 text-left',
-                'transition duration-300 hover:border-white/25 hover:shadow-[0_0_40px_rgba(255,92,138,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-glow/50',
-                spanCls[product.size ?? 'sm'],
-            )}
-            initial={{ opacity: 0, y: 28 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.5, delay: Math.min(index * 0.06, 0.36), ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             whileHover={{ y: -6 }}
+            className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] text-left backdrop-blur-md transition hover:border-white/25 hover:shadow-[0_0_40px_rgba(255,92,138,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-glow/50"
         >
-            {/* Ảnh nền — phóng to nhẹ khi hover */}
-            {product.image && (
-                <Img
-                    src={product.image}
-                    alt={product.name}
-                    wrapperClassName="absolute inset-0 h-full w-full"
-                    className={cn(
-                        'h-full w-full object-cover transition-transform duration-500 group-hover:scale-110',
-                        placeholder ? 'opacity-20 grayscale' : 'opacity-30',
-                    )}
-                />
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-secondary/95 via-secondary/70 to-secondary/30" />
-
-            <div className="relative flex items-start justify-between gap-3">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-glow backdrop-blur-sm">
-                    <Icon className={isLarge ? 'h-6 w-6' : 'h-5 w-5'} />
-                </span>
-                <StatusBadge status={product.status} />
+            <div className="relative h-44 overflow-hidden">
+                {product.image && (
+                    <Img
+                        src={product.image}
+                        alt={product.name}
+                        wrapperClassName="absolute inset-0 h-full w-full"
+                        className={cn(
+                            'h-full w-full object-cover transition-transform duration-500 group-hover:scale-110',
+                            placeholder ? 'opacity-40 grayscale' : 'opacity-70',
+                        )}
+                    />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/40 to-transparent" />
+                <div className="absolute inset-x-4 top-4 flex items-start justify-between">
+                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-glow backdrop-blur-sm">
+                        <Icon className="h-5 w-5" />
+                    </span>
+                    <StatusBadge status={product.status} />
+                </div>
             </div>
 
-            <div className="relative mt-auto pt-6">
-                <h3 className={cn('font-bold text-white', isLarge ? 'text-2xl' : 'text-lg')}>{product.name}</h3>
+            <div className="flex flex-1 flex-col p-6">
+                <h3 className="text-xl font-bold text-white">{product.name}</h3>
                 <p className="mt-1 text-sm font-medium text-glow">{product.tagline}</p>
-                {isLarge && <p className="mt-3 max-w-md text-sm leading-relaxed text-white/65">{product.description}</p>}
-                <div className="mt-4 flex flex-wrap items-center gap-2">
-                    {product.technologies.slice(0, isLarge ? 5 : 3).map((t) => (
+                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-white/65">{product.description}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                    {product.technologies.slice(0, 4).map((t) => (
                         <Badge key={t} variant="outline">
                             {t}
                         </Badge>
                     ))}
                 </div>
-                <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-white/60 transition group-hover:text-white">
+                <span className="mt-auto inline-flex items-center gap-1 pt-5 text-xs font-semibold text-white/60 transition group-hover:text-white">
                     {product.video ? <PlayCircle className="h-4 w-4" /> : <ArrowUpRight className="h-4 w-4" />}
                     {product.video ? 'Xem demo' : 'Chi tiết'}
                 </span>
@@ -97,7 +88,7 @@ export function ProductEcosystem() {
 
     return (
         <section id="products" className="relative scroll-mt-24 overflow-hidden py-20 md:py-28">
-            <div className="bg-mesh-animated pointer-events-none absolute inset-0 opacity-40" aria-hidden />
+            <TechBackdrop />
             <div className="relative mx-auto max-w-7xl px-4 md:px-8">
                 <div className="mb-10 max-w-2xl">
                     <p className="text-sm font-bold tracking-[0.25em] text-accent">SẢN PHẨM</p>
@@ -107,11 +98,11 @@ export function ProductEcosystem() {
                     </p>
                 </div>
 
-                <div className="grid auto-rows-[210px] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {products.map((p, i) => (
-                        <ProductCard key={p.id} product={p} index={i} onOpen={() => setSelected(p)} />
+                <Slider slideClassName="w-[85%] sm:w-[360px]" ariaLabel="Danh sách sản phẩm">
+                    {products.map((p) => (
+                        <ProductCard key={p.id} product={p} onOpen={() => setSelected(p)} />
                     ))}
-                </div>
+                </Slider>
             </div>
 
             <Drawer open={!!selected} onOpenChange={(o) => !o && setSelected(null)} title={selected?.name}>
