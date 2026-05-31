@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { TeamMember } from '@/types/tdxp';
 import { Drawer } from '@/components/ui/Drawer';
 import { Badge } from '@/components/ui/Badge';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Img } from '@/components/ui/Img';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { DetailSection, Stat, StatGrid } from './detailKit';
 
 interface MemberDrawerProps {
     member: TeamMember | null;
@@ -16,9 +17,7 @@ interface MemberDrawerProps {
 export function MemberDrawer({ member, open, onOpenChange }: MemberDrawerProps) {
     const [galleryIndex, setGalleryIndex] = useState(0);
 
-    if (!member) {
-        return null;
-    }
+    if (!member) return null;
 
     const gallery = member.gallery;
     const prev = () => setGalleryIndex((i) => (i - 1 + gallery.length) % gallery.length);
@@ -26,106 +25,104 @@ export function MemberDrawer({ member, open, onOpenChange }: MemberDrawerProps) 
 
     return (
         <Drawer open={open} onOpenChange={onOpenChange}>
+            {/* Header banner */}
             <div className="relative">
-                <Img
-                    src={member.coverImage}
-                    alt=""
-                    wrapperClassName="h-36 w-full md:h-44"
-                    className="h-full w-full object-cover"
-                />
-                <div className="absolute -bottom-12 left-6 md:left-8">
-                    <motion.img
-                        layoutId={`member-avatar-${member.id}`}
-                        src={member.avatar}
-                        alt={`Ảnh đại diện ${member.name}`}
-                        loading="lazy"
-                        decoding="async"
-                        width={96}
-                        height={96}
-                        className="h-24 w-24 rounded-2xl border-4 border-[#3a0016] object-cover shadow-xl"
-                    />
+                <Img src={member.coverImage} alt="" wrapperClassName="h-40 w-full" className="h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#3a0016] via-[#3a0016]/60 to-transparent" />
+                <div className="absolute inset-x-6 bottom-4 flex items-end gap-4 md:inset-x-8">
+                    <span
+                        className="flex h-20 w-20 shrink-0 items-end justify-center overflow-hidden rounded-2xl border-2 border-white/20 shadow-xl"
+                        style={{ background: 'radial-gradient(120% 120% at 50% 0%, #c3004a, #6d0026)' }}
+                    >
+                        <motion.img
+                            layoutId={`member-avatar-${member.id}`}
+                            src={member.avatar}
+                            alt={`Ảnh đại diện ${member.name}`}
+                            loading="lazy"
+                            decoding="async"
+                            className="h-[130%] w-auto object-contain object-bottom"
+                        />
+                    </span>
+                    <div className="pb-1">
+                        <h2 className="text-2xl font-bold leading-tight text-white">{member.name}</h2>
+                        <p className="text-sm font-medium text-glow">{member.role}</p>
+                    </div>
                 </div>
             </div>
-            <div className="space-y-8 px-6 pb-10 pt-16 md:px-8">
-                <header>
-                    <h2 className="text-2xl font-bold text-white">{member.name}</h2>
-                    <p className="text-glow">{member.role}</p>
-                    <p className="mt-1 text-sm text-white/60">Kinh nghiệm: {member.experience}</p>
-                    <blockquote className="mt-4 border-l-4 border-glow pl-4 text-white/80 italic">
-                        &ldquo;{member.quote}&rdquo;
-                    </blockquote>
-                </header>
 
-                <section>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-glow/80">Giới thiệu</h3>
-                    <p className="mt-2 text-white/80 leading-relaxed">{member.bio}</p>
-                </section>
+            <div className="space-y-7 px-6 pb-10 pt-6 md:px-8">
+                <StatGrid>
+                    <Stat label="Kinh nghiệm" value={member.experience} />
+                    <Stat label="Dự án" value={member.activeProjectCount} />
+                    <Stat label="Kỹ năng" value={member.skills.length} />
+                </StatGrid>
 
-                <section>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-glow/80">
-                        Dự án hiện tại
-                    </h3>
-                    <ul className="mt-4 space-y-4">
-                        {member.projects.map((p) => (
-                            <li key={p.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
-                                <div className="flex justify-between gap-2">
-                                    <span className="font-semibold text-white">{p.name}</span>
-                                    <span className="text-xs text-white/50">Tiến độ: {p.progress}%</span>
-                                </div>
-                                <p className="mt-1 text-sm text-white/60">Vai trò: {p.role}</p>
-                                <ProgressBar label="" value={p.progress} showLabel={false} className="mt-3" />
-                            </li>
-                        ))}
-                    </ul>
-                </section>
+                <blockquote className="border-l-2 border-glow pl-4 text-white/80 italic">
+                    &ldquo;{member.quote}&rdquo;
+                </blockquote>
 
-                <section>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-glow/80">
-                        Chuyên môn công nghệ
-                    </h3>
-                    <div className="mt-3 flex flex-wrap gap-2">
+                <DetailSection title="Giới thiệu" icon="User">
+                    <p className="leading-relaxed text-white/75">{member.bio}</p>
+                </DetailSection>
+
+                {member.projects.length > 0 && (
+                    <DetailSection title="Dự án hiện tại" icon="FolderKanban">
+                        <ul className="space-y-3">
+                            {member.projects.map((p) => (
+                                <li key={p.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="font-semibold text-white">{p.name}</span>
+                                        <span className="text-xs text-white/50">{p.progress}%</span>
+                                    </div>
+                                    <p className="mt-1 text-sm text-white/55">Vai trò: {p.role}</p>
+                                    <ProgressBar label="" value={p.progress} showLabel={false} className="mt-3" />
+                                </li>
+                            ))}
+                        </ul>
+                    </DetailSection>
+                )}
+
+                <DetailSection title="Chuyên môn công nghệ" icon="Code2">
+                    <div className="flex flex-wrap gap-2">
                         {member.skills.map((s) => (
                             <Badge key={s.name}>{s.name}</Badge>
                         ))}
                     </div>
-                </section>
+                </DetailSection>
 
-                <section>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-glow/80">
-                        Phân bổ công việc
-                    </h3>
-                    <div className="mt-4 space-y-3">
+                <DetailSection title="Phân bổ công việc" icon="Activity">
+                    <div className="space-y-3">
                         {member.workload.map((w) => (
                             <ProgressBar key={w.label} label={w.label} value={w.value} />
                         ))}
                     </div>
-                </section>
+                </DetailSection>
 
-                <section>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-glow/80">Thành tựu</h3>
-                    <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-secondary/80">
+                <DetailSection title="Thành tựu" icon="Award">
+                    <ul className="space-y-2">
                         {member.achievements.map((a) => (
-                            <li key={a}>{a}</li>
+                            <li key={a} className="flex gap-2 text-sm text-white/75">
+                                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-glow" />
+                                {a}
+                            </li>
                         ))}
                     </ul>
-                </section>
+                </DetailSection>
 
-                <section>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-glow/80">Hành trình sự nghiệp</h3>
-                    <ol className="relative mt-4 space-y-4 border-l-2 border-primary/20 pl-6">
+                <DetailSection title="Hành trình sự nghiệp" icon="Milestone">
+                    <ol className="relative space-y-4 border-l-2 border-white/15 pl-6">
                         {member.careerTimeline.map((step) => (
                             <li key={step.title} className="relative">
-                                <span className="absolute -left-[1.6rem] top-1 h-3 w-3 rounded-full bg-primary" />
-                                <p className="font-medium text-secondary">{step.title}</p>
-                                <p className="text-xs text-secondary/50">{step.period}</p>
+                                <span className="absolute -left-[1.65rem] top-1 h-3 w-3 rounded-full bg-glow ring-4 ring-[#3a0016]" />
+                                <p className="font-medium text-white">{step.title}</p>
+                                <p className="text-xs text-white/50">{step.period}</p>
                             </li>
                         ))}
                     </ol>
-                </section>
+                </DetailSection>
 
-                <section>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-glow/80">Thư viện ảnh</h3>
-                    <div className="relative mt-4 overflow-hidden rounded-xl">
+                <DetailSection title="Thư viện ảnh" icon="Images">
+                    <div className="relative overflow-hidden rounded-xl border border-white/10">
                         <AnimatePresence mode="wait">
                             <motion.img
                                 key={galleryIndex}
@@ -143,7 +140,7 @@ export function MemberDrawer({ member, open, onOpenChange }: MemberDrawerProps) 
                         <button
                             type="button"
                             onClick={prev}
-                            className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow"
+                            className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition hover:bg-white/25"
                             aria-label="Ảnh trước"
                         >
                             <ChevronLeft className="h-4 w-4" />
@@ -151,19 +148,20 @@ export function MemberDrawer({ member, open, onOpenChange }: MemberDrawerProps) 
                         <button
                             type="button"
                             onClick={next}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition hover:bg-white/25"
                             aria-label="Ảnh sau"
                         >
                             <ChevronRight className="h-4 w-4" />
                         </button>
+                        <span className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-black/40 px-2 py-0.5 text-[11px] text-white/80 backdrop-blur-sm">
+                            {galleryIndex + 1}/{gallery.length}
+                        </span>
                     </div>
-                </section>
+                </DetailSection>
 
                 <section className="rounded-2xl bg-gradient-to-br from-primary to-secondary p-8 text-center">
                     <p className="text-xs font-bold uppercase tracking-widest text-white/70">Phương châm</p>
-                    <p className="mt-4 text-2xl font-bold leading-snug text-white md:text-3xl">
-                        &ldquo;{member.motto}&rdquo;
-                    </p>
+                    <p className="mt-4 text-2xl font-bold leading-snug text-white md:text-3xl">&ldquo;{member.motto}&rdquo;</p>
                 </section>
             </div>
         </Drawer>
