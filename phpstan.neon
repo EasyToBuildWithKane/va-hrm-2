@@ -1,0 +1,12 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+        - modules
+    level: 6
+    checkMissingIterableValueType: false
+    ignoreErrors:
+        - '#Call to an undefined method .*::factory\(\)#'
+        - '#Property .* does not accept .*#'

@@ -1,0 +1,28 @@
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `avatar` text DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `point` int(11) NOT NULL DEFAULT 0,
+  `contribution_point` int(11) NOT NULL DEFAULT 0,
+  `check_first_login` tinyint(1) NOT NULL DEFAULT 0,
+  `first_login_at` timestamp NULL DEFAULT NULL,
+  `last_login_at` timestamp NULL DEFAULT NULL,
+  `last_logout_at` timestamp NULL DEFAULT NULL,
+  `level` varchar(255) DEFAULT NULL,
+  `google_id` varchar(255) DEFAULT NULL,
+  `google_access_token` text DEFAULT NULL,
+  `google_refresh_token` text DEFAULT NULL,
+  `google_token_expires_at` timestamp NULL DEFAULT NULL,
+  `google_scopes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`google_scopes`)),
+  `google_event_id` varchar(255) DEFAULT NULL,
+  `google_calendar_id` varchar(255) DEFAULT NULL,
+  `strava_reconnect_suggested` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -1,0 +1,14 @@
+---
+description: VA-HRM docs SSOT — read AI_CONTEXT on demand; do not preload /docs
+alwaysApply: true
+---
+
+# VA-HRM docs (token-light)
+
+`docs/` is SSOT. **Never** paste or summarize the full doc tree in replies; **read files only when the task needs them**.
+
+1. **Bootstrap (once per task):** `docs/AI_CONTEXT.md` → pick paths from `docs/README.md` map (module/api/flow/db).
+2. **Conflict:** current behavior = code + `database/migrations/`; architecture, API contract, rules = docs. Flag mismatches; fix code or docs.
+3. **`PROPOSED`** (`docs/uiux/`, `docs/wireframe/`): no SPA in repo. **`TODO: Need Human Validation`:** verify in source.
+4. **Deep reads (if touched):** `docs/modules/*` + `docs/api/*`, `docs/business/business-rules.md`, `docs/flows/*`, `docs/architecture/workflow-engine.md`, `docs/database/*`, `docs/developer-guide/*`.
+5. **Ship:** after behavior/API changes, update matching `docs/modules/*.md` + `docs/api/*.md` (and `docs/AI_CONTEXT.md` if architectural). No React/Next/Reverb/Telescope. New workflow types: `config/workflow.php` + module docs.

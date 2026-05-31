@@ -1,0 +1,384 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   TDXP — Design Tokens (Tailwind v4 @theme)
+   Brand: #9A0036 (đỏ mận) · #102A43 (xanh navy) · #FFFFFF
+   ========================================================================= */
+@theme {
+    /* Color tokens */
+    --color-primary: #9a0036;
+    --color-primary-foreground: #ffffff;
+    --color-primary-soft: #c41250;
+    --color-primary-deep: #6d0026;
+    --color-primary-bright: #c3004a;
+    --color-glow: #ff5c8a;
+    --color-secondary: #102a43;
+    --color-ink: #081c2c;
+    --color-accent: #e11d48;
+    --color-surface: #f7f9fc;
+    --color-surface-2: #eef2f8;
+    /* Immersive navy theme bands — đồng bộ theme section "ĐỔI MỚI SÁNG TẠO" (AILab) */
+    --color-bg-base: #14375f;
+    --color-bg-deep: #0d2438;
+    --color-bg-darkest: #081c2c;
+
+    /* Typography */
+    --font-sans:
+        "Inter", "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+
+    /* Radius scale */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
+    --radius-2xl: 2rem;
+
+    /* Elevation */
+    --shadow-soft:
+        0 1px 2px rgba(16, 42, 67, 0.04), 0 8px 24px rgba(16, 42, 67, 0.06);
+    --shadow-lift: 0 12px 32px rgba(16, 42, 67, 0.12);
+    --shadow-glow: 0 0 32px rgba(154, 0, 54, 0.28);
+}
+
+:root {
+    --color-bg: #0d2438;
+    color-scheme: dark;
+}
+
+html {
+    scroll-behavior: smooth;
+    /* Chặn tràn ngang toàn trang — không bao giờ xuất hiện thanh cuộn ngang */
+    overflow-x: clip;
+}
+
+body {
+    overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+body {
+    /* Nền xanh navy immersive — đồng bộ theme section "ĐỔI MỚI SÁNG TẠO" (AILab) */
+    background-color: var(--color-bg-deep);
+    background-image:
+        radial-gradient(
+            60% 55% at 12% -5%,
+            rgba(36, 99, 156, 0.45),
+            transparent 60%
+        ),
+        radial-gradient(
+            55% 50% at 88% 8%,
+            rgba(16, 42, 67, 0.6),
+            transparent 60%
+        ),
+        radial-gradient(
+            70% 60% at 50% 110%,
+            rgba(8, 28, 44, 0.65),
+            transparent 60%
+        ),
+        linear-gradient(165deg, var(--color-bg-base) 0%, var(--color-bg-deep) 55%, var(--color-bg-darkest) 100%);
+    background-attachment: fixed;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Infinite marquee ---- */
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-marquee {
+    animation: marquee 40s linear infinite;
+}
+
+.animate-marquee-slow {
+    animation: marquee 60s linear infinite;
+}
+
+.pause-on-hover:hover .animate-marquee,
+.pause-on-hover:hover .animate-marquee-slow {
+    animation-play-state: paused;
+}
+
+/* ---- Monochrome logo (mask) — recolorable via `color` ---- */
+.tech-logo {
+    display: inline-block;
+    background-color: currentColor;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    }
+
+    /* ---- Glassmorphism helper ---- */
+    .glass {
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .glass-light {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(16px) saturate(140%);
+        -webkit-backdrop-filter: blur(16px) saturate(140%);
+        border: 1px solid rgba(255, 255, 255, 0.55);
+    }
+
+    /* ---- Ẩn thanh cuộn (dùng cho slider/swiper) ---- */
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* ---- Aurora / Gradient mesh background ---- */
+    @keyframes aurora {
+        0%,
+        100% {
+            transform: translate3d(0, 0, 0) scale(1);
+        }
+        33% {
+            transform: translate3d(4%, -3%, 0) scale(1.08);
+        }
+        66% {
+            transform: translate3d(-3%, 4%, 0) scale(0.96);
+        }
+    }
+
+    .bg-aurora {
+        position: relative;
+        isolation: isolate;
+    }
+
+    .bg-aurora::before {
+        content: "";
+        position: absolute;
+        inset: -25%;
+        z-index: -1;
+        background:
+            radial-gradient(
+                40% 40% at 20% 20%,
+                rgba(36, 99, 156, 0.22),
+                transparent 60%
+            ),
+            radial-gradient(
+                45% 45% at 80% 15%,
+                rgba(20, 58, 96, 0.20),
+                transparent 60%
+            ),
+            radial-gradient(
+                50% 50% at 70% 80%,
+                rgba(16, 42, 67, 0.18),
+                transparent 60%
+            ),
+            radial-gradient(
+                40% 40% at 25% 85%,
+                rgba(8, 28, 44, 0.18),
+                transparent 60%
+            );
+        filter: blur(40px);
+        animation: aurora 18s ease-in-out infinite;
+    }
+
+    .bg-mesh {
+        background-image:
+            linear-gradient(rgba(16, 42, 67, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(16, 42, 67, 0.04) 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+
+    /* ---- Floating element ---- */
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-14px);
+        }
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    /* ---- Glow pulse ---- */
+    @keyframes glow-pulse {
+        0%,
+        100% {
+            opacity: 0.55;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.06);
+        }
+    }
+
+    .animate-glow {
+        animation: glow-pulse 4s ease-in-out infinite;
+    }
+
+    .glow {
+        box-shadow: 0 0 32px rgba(154, 0, 54, 0.28);
+    }
+
+    /* ---- Animated light beam ---- */
+    @keyframes light-beam {
+        0% {
+            transform: translateX(-120%) skewX(-18deg);
+        }
+        100% {
+        transform: translateX(220%) skewX(-18deg);
+    }
+}
+
+.light-beam {
+    position: relative;
+    overflow: hidden;
+}
+
+.light-beam::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.35),
+        transparent
+    );
+    animation: light-beam 4.5s ease-in-out infinite;
+}
+
+/* ---- Skeleton shimmer ---- */
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.18),
+        transparent
+    );
+    animation: shimmer 1.6s infinite;
+}
+
+/* ---- Glass card cho theme đỏ (tái dùng xuyên suốt portal) ---- */
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+/* ---- Viền gradient xoay (motif công nghệ) ---- */
+@keyframes border-spin {
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+.tech-border {
+    position: relative;
+    isolation: isolate;
+}
+
+.tech-border::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba(255, 92, 138, 0.9) 60deg,
+        rgba(255, 209, 102, 0.7) 120deg,
+        transparent 180deg,
+        transparent 360deg
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: border-spin 4s linear infinite;
+}
+
+.tech-border:hover::before {
+    opacity: 1;
+}
+
+/* ---- Lưới quét tech (scanline tinh tế) ---- */
+@keyframes grid-pan {
+    0% {
+        background-position:
+            0 0,
+            0 0;
+    }
+    100% {
+        background-position:
+            40px 40px,
+            40px 40px;
+    }
+}
+
+.bg-mesh-animated {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: grid-pan 12s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-marquee,
+    .animate-marquee-slow,
+    .skeleton::after,
+    .bg-aurora::before,
+    .animate-float,
+    .animate-glow,
+    .light-beam::after,
+    .tech-border::before,
+    .bg-mesh-animated {
+        animation: none;
+    }
+}
